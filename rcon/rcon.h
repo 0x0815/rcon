@@ -10,5 +10,6 @@
 #define rcon_h
 
 bool isValidIpAddress(char *ipAddress);
+bool isValidPort(char *port);
 
 #endif /* rcon_h */

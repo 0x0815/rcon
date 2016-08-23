@@ -17,26 +17,66 @@
 #include <arpa/inet.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <unistd.h>
 #include "rcon.h"
 
 #define QUIET false
 #define DEBUG true
 
+int auth = 0;
+
 int main(int argc, char *argv[]) {
     
-    if (argc <= 0) {
-        printf("%s \n","Usage: rcon {ip} {port} {password}");
+    char *ip;
+    short port;
+    char *password;
+    int ret = 0;
+    int sock;
+    struct sockaddr_in a;
+    char *command = argv[argc];
+    
+    if(DEBUG){
+        printf("%s: %i\n","argument number",argc);
+        for (int i = 0; i < argc; i++)
+            printf("%s\n", argv[i]);
+    }
+    
+    if (argc == 0 || argc >=6) {
+        if(!QUIET) printf("%s \n","Usage: rcon {ip} {port} {password}");
         exit(0);
     }
     
     if(!isValidIpAddress(argv[1])){
-        printf("%s \n","Not a valid IP.");
+        if(!QUIET) printf("%s \n","Not a valid IP.");
         exit(0);
     }
     
-    if (!isdigit(argv[2])) {
-        printf("%s \n","Not a valid port.");
+    if (!isValidPort(argv[2])) {
+        if(!QUIET) printf("%s \n","Not a valid port.");
+        exit(0);
     }
+    
+    ip = argv[1];
+    port = atoi(argv[2]);
+    password = argv[3];
+    
+    a.sin_family = AF_INET;
+    a.sin_addr.s_addr = inet_addr(ip);
+    a.sin_port = htons(port);
+    
+    sock = socket(AF_INET, SOCK_STREAM, 0);
+    ret = connect(sock, (struct sockaddr *) &a, sizeof(a));
+    
+    if (ret == -1) {
+        if(!QUIET) printf("%s","Connection failed.\n");
+    }else{
+        if(!DEBUG) printf("%s","Connectet to Server.\n");
+    }
+    
+    
+   
+    
+    close(sock);
 }
 
 bool isValidIpAddress(char *ipAddress){
@@ -44,3 +84,16 @@ bool isValidIpAddress(char *ipAddress){
     int result = inet_pton(AF_INET, ipAddress, &(sa.sin_addr));
     return result != 0;
 }
+
+bool isValidPort(char *port){
+    for (int i = 0; i < strlen(port); i++) {
+        if (!isdigit(port[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+
+
