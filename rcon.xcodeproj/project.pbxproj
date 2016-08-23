@@ -25,6 +25,7 @@
 /* Begin PBXFileReference section */
 		C3DB80D71D6C871F00221AE4 /* rcon */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = rcon; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DB80DA1D6C871F00221AE4 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		C3DB80E11D6C873100221AE4 /* rcon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rcon.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +59,7 @@
 			isa = PBXGroup;
 			children = (
 				C3DB80DA1D6C871F00221AE4 /* main.c */,
+				C3DB80E11D6C873100221AE4 /* rcon.h */,
 			);
 			path = rcon;
 			sourceTree = "<group>";
@@ -209,6 +211,7 @@
 		C3DB80DF1D6C871F00221AE4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -216,6 +219,7 @@
 		C3DB80E01D6C871F00221AE4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
