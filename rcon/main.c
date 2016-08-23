@@ -23,6 +23,12 @@
 #define QUIET false
 #define DEBUG true
 
+#define SERVERDATA_AUTH 3
+#define SERVERDATA_AUTH_RESPONSE 2
+#define SERVERDATA_EXECCOMMAND 2
+#define SERVERDATA_RESPONSE_VALUE 0
+#define EMPTYSTRING ""
+
 int auth = 0;
 
 int main(int argc, char *argv[]) {
@@ -33,7 +39,6 @@ int main(int argc, char *argv[]) {
     int ret = 0;
     int sock;
     struct sockaddr_in a;
-    char *command = argv[argc];
     
     if(DEBUG){
         printf("%s: %i\n","argument number",argc);
@@ -41,7 +46,7 @@ int main(int argc, char *argv[]) {
             printf("%s\n", argv[i]);
     }
     
-    if (argc == 0 || argc >=6) {
+    if (argc == 1 || argc >=6) {
         if(!QUIET) printf("%s \n","Usage: rcon {ip} {port} {password}");
         exit(0);
     }
@@ -73,8 +78,7 @@ int main(int argc, char *argv[]) {
         if(!DEBUG) printf("%s","Connectet to Server.\n");
     }
     
-    
-   
+    sendRcon(sock, 20, SERVERDATA_AUTH, password);
     
     close(sock);
 }
@@ -91,6 +95,21 @@ bool isValidPort(char *port){
             return false;
         }
     }
+    return true;
+}
+
+bool sendRcon(int sock, int id, int packetType, char *command){
+    int size, ret;
+    
+    size = 10 + (int)strlen(command);
+    ret = (int)send(sock, &size, sizeof(int), 0);
+    ret = (int)send(sock, &id, sizeof(int), 0);
+    ret = (int)send(sock, &packetType, sizeof(int), 0);
+    ret = (int)send(sock, command, sizeof(command) + 1, 0);
+    ret = (int)send(sock, EMPTYSTRING, sizeof(EMPTYSTRING) + 1, 0);
+    
+    if (DEBUG) printf("%s%d\n","Bytes sent: ", size + 4);
+    
     return true;
 }
 

@@ -11,5 +11,6 @@
 
 bool isValidIpAddress(char *ipAddress);
 bool isValidPort(char *port);
+bool sendRcon(int sock, int id, int packetType, char *command);
 
 #endif /* rcon_h */
